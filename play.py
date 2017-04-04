@@ -430,6 +430,11 @@ class mario:
 			action = np.array(self.gnome.evaluateFitness(state, display)).argmax()
 			# print(mario.actions[action])
 			observation, reward, done, info = mario.env.step(mario.actions[action])
+			if info.get('ignore') != None:
+				done = False
+				score = 0
+				mario.env.reset()
+				observation = mario.env.reset()
 			if done:break
 			score += reward
 			if display:
@@ -454,7 +459,7 @@ class mario:
 				# pickle.dump(copy.deepcopy(self.gnome),f)
 
 if __name__ == "__main__":
-	with open('data1/data2130.dat','rb') as fp:
+	with open('data1/data2471.dat','rb') as fp:
 		player = pickle.load(fp)
 	# gnome = pickle.load(open("gnome.pkl","rb"))
 	player.task = mario(player)

@@ -60,18 +60,22 @@ class mario:
 		mario.env = gym.make('ppaquette/SuperMarioBros-1-1-Tiles-v0')
 		observation = mario.env.reset()
 		# score = random.randrange(50)
-		done, stagnant, dist, limit,score = False, 0, 0, 500,0
+		done, stagnant, dist, limit,score = False, 0, 0, 100,0
 		while not done:
 			state = list(observation.flat)
+			previous = list(observation.flat)
 			state.insert(0,1)
 			action = np.array(self.gnome.evaluateFitness(state, display)).argmax()
 			# print(mario.actions[action])
 			observation, reward, done, info = mario.env.step(mario.actions[action])
-			if done:break
-			score += reward
+			if info.get('ignore') != None:
+				done = False
+				score = 0
+				observation = mario.env.reset()
+			if info.get('distance') != None:
+				score = info['distance']
 			if display:
-				mario.env.render()
-				print("Score:",info['distance'],score,end = "")
+				print("Score:",score,end = "")
 				print("\r",end = "")
 			if dist < info['distance']:
 				dist = info['distance']
@@ -84,7 +88,7 @@ class mario:
 		self.gnome.fitness = score
 		if self.gnome.fitness > mario.fitness:
 			mario.fitness = copy.deepcopy(self.gnome.fitness)
-			with open('data1/data'+str(mario.fitness)+'.dat','wb') as f:
+			with open('data2/data'+str(mario.fitness)+'.dat','wb') as f:
 				pickle.dump(copy.deepcopy(self.gnome),f)
 
 if __name__ == "__main__":
