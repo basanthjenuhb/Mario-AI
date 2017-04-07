@@ -1,6 +1,6 @@
 import gym, time, numpy as np, gym_pull, random, copy, pickle
 from graphviz import Digraph
-
+import ppaquette_gym_super_mario
 class nodeGene:
 	'''
 	Class to represent a node int the network.
@@ -27,7 +27,7 @@ class connectGene:
 		source: Link from which node
 		destination: Link to which node.
 		weight: Weight associated with the link.
-		Enabled: Flag to see if the link is to be considered or not.
+		Enabled: Flag to see if th-e link is to be considered or not.
 		Innovation: A number to track the gene.(Historical Marker.)
 	'''
 
@@ -422,13 +422,12 @@ class mario:
 	def play(self, display):
 		mario.env = gym.make('ppaquette/SuperMarioBros-1-1-Tiles-v0')
 		observation = mario.env.reset()
-		# score = random.randrange(50)
-		done, stagnant, dist, limit,score = False, 0, 0, 100,0
+		done, stagnant, dist, limit,score = False, 0, 0, 5,0
 		while not done:
 			state = list(observation.flat)
+			previous = list(observation.flat)
 			state.insert(0,1)
 			action = np.array(self.gnome.evaluateFitness(state, display)).argmax()
-			# print(mario.actions[action])
 			observation, reward, done, info = mario.env.step(mario.actions[action])
 			if info.get('ignore') != None:
 				done = False
@@ -446,20 +445,16 @@ class mario:
 				stagnant = 0
 			else:
 				stagnant += 1
-				if stagnant > limit:
+				if stagnant > limit and score > 2000:
 					stagnant = 0
-					observation, reward, done, info = mario.env.step(mario.actions[1])
-					# break
+					observation, reward, done, info = mario.env.step([1,0,0,0,0,0])
+					observation, reward, done, info = mario.env.step([0,0,0,1,0,0])
 		mario.env.close()
 		self.gnome.fitness = score
 		print(score)
-		# if self.gnome.fitness > mario.fitness:
-			# mario.fitness = copy.deepcopy(self.gnome.fitness)
-			# with open('data1/data'+str(mario.fitness)+'.dat','wb') as f:
-				# pickle.dump(copy.deepcopy(self.gnome),f)
 
 if __name__ == "__main__":
-	with open('data1/data2471.dat','rb') as fp:
+	with open('mario.dat','rb') as fp:
 		player = pickle.load(fp)
 	# gnome = pickle.load(open("gnome.pkl","rb"))
 	player.task = mario(player)

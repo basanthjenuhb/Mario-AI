@@ -1,5 +1,5 @@
 import gym, time, numpy as np, gym_pull, random, copy, pickle, multiprocessing
-
+import ppaquette_gym_super_mario
 def ToDiscrete():
 
     class ToDiscreteWrapper(gym.Wrapper):
@@ -74,9 +74,6 @@ class mario:
 				observation = mario.env.reset()
 			if info.get('distance') != None:
 				score = info['distance']
-			if display:
-				print("Score:",score,end = "")
-				print("\r",end = "")
 			if dist < info['distance']:
 				dist = info['distance']
 				stagnant = 0

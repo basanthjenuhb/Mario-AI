@@ -1,0 +1,4 @@
+[2017-04-04 06:51:22,176] Found and registered 66 user environments.
+[2017-04-04 06:51:22,869] Making new env: ppaquette/SuperMarioBros-1-1-Tiles-v0
+/usr/bin/xvfb-run: line 166:  3759 Terminated              DISPLAY=:$SERVERNUM XAUTHORITY=$AUTHFILE "$@" 2>&1
+/usr/bin/xvfb-run: line 171: kill: (3740) - No such process
