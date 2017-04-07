@@ -532,7 +532,7 @@ class population:
 		self.removeStaleSpecies()
 		self.rankAll()
 		self.calculateAverageFitness()
-		# self.removeWeakSpecies()
+		self.removeWeakSpecies()
 		newMembers = [ self.generationBestGnome ]
 		for specie in self.species:
 			num = math.floor((specie.averageFitness / self.totalAverageFitness * self.size)) - 1
@@ -611,10 +611,10 @@ mutationRate['disableConnection'] = -0.01
 
 delta['excess'] = 1
 delta['disjoint'] = 2
-delta['weights'] = 0.1
-delta['threshold'] = 4
+delta['weights'] = 0.4
+delta['threshold'] = 1
 delta['staleness'] = 15
-populationSize = 50
+populationSize = 150
 inputs, outputs = 209, 14
 iterations = 50000
 requiredFitness = 100000	# This is out of 40
